@@ -16,8 +16,8 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 [image1]: ./examples/car_not_car.png
 [image2]: ./examples/HOG_example.jpg
-[image3]: ./examples/sliding_windows.jpg
-[image4]: ./examples/sliding_window.jpg
+[image4]: ./writeup_imgs/windows.png
+[image21]: ./examples/sliding_window.jpg
 [image5]: ./examples/bboxes_and_heat.png
 [image6]: ./examples/labels_map.png
 [image7]: ./examples/output_bboxes.png
@@ -49,7 +49,17 @@ Here is an example using the `YCrCb` color space and HOG parameters of `orientat
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+I tried various combinations of parameters through mostly trial and error looking for a high accuracy on the test set.  A chart of various combinations of parameters is shown below along with accuracy scores and feature extraction times.  Adding in 'ALL' HOG channels does increase accuracy, but doubles the extraction time of just a single channel.  This could come into play if efficiency becomes an issue.  The bolded row is the parameters that I chose.
+
+| Color Space| Orient| Pix/Cell | Cell/Block | HOG Channel | Accuracy | Extraction Time (sec) |
+|:-------------:|:-------------:|:-------------:| :-------------:| :-------------:| :-------------:| :-------------:|
+| LUV   	| 9      | 8		| 2			| 0			| 96.9% | 96.2 |
+| RGB   	| 9      | 8		| 2			| 0			| 95.5% | 65.1 |
+| YCrCb   	| 9      | 8		| 2			| 0			| 95.1% | 70.9 |
+| HLS   	| 9      | 8		| 2			| 0			| 95.9% | 62.2 |
+| **YUV**  		| **9**      | **8**		| **2**			| **ALL**		| **98.3%** | **124.4** |
+| HLS  		| 9      | 8		| 2			| ALL		| 97.5% | 125.2 |
+
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
@@ -59,13 +69,18 @@ I trained a linear SVM using...
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+I used the `fit_cars` function from the Udacity lectures and specified a couple of ranges and scales to fit the sliding windows.  I started the window detection at y-axis 400, because that is where the horizon intersects with the road and vehicles should not appear above that line.  I implemented three seperate sliding window searches with the following parameters.  I decided on the Y axis ranges and scales based on relative sizes of vehicles that will appear in those ranges (smaller vehicles higher up in the image, larger closer to the bottom).
 
-![alt text][image3]
+| Y Start | Y Stop | Scale | Cells per Step
+|:-------------:|:-------------:|:-------------:|
+| 400	| 500    | 1.0		| 2 |
+| 400  	| 550     | 1.5		| 2 |
+| 450   	| 650      | 2.0		| 2 |
+|500 	| 650	| 2.5	| 2 |
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+Ultimately I searched on three scales using LUV 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are the results across the test images.  In general, the model does an adequate job of vehicle detection, though there are quite a few false positives that will need to be dealth with.
 
 ![alt text][image4]
 ---
