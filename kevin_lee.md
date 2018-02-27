@@ -63,7 +63,10 @@ I tried various combinations of parameters through mostly trial and error lookin
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+I first tried using a Linear SVM with default parameters.  The test set accuracy was quite good at 98+% for the parameters chosen, but after running the fitted model on a few of the test images, there were more false positives than I had hoped for as well as a few cases of not detecting vehicles very well.  I decided to use another type of model, RandomForestClassifier to see how it performed on the same features.  I used grid search to test out combinations of parameters (n_estimators, min_samples_split, min_samples_leaf, and max_leaf_nodes) and the highest accuracy was achieved by the following parameters.
+
+{'max_leaf_nodes': None, 'min_samples_leaf': 1, 'min_samples_split': 7, 'n_estimators': 100}
+{'max_leaf_nodes': None, 'min_samples_leaf': 5, 'min_samples_split': 7, 'n_estimators': 50}
 
 ### Sliding Window Search
 
