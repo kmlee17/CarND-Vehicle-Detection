@@ -81,8 +81,8 @@ However, the train time was over 2 minutes for this configuration, so I decided 
 
 I used the `fit_cars` function from the Udacity lectures and specified a couple of ranges and scales to fit the sliding windows.  I started the window detection at y-axis 400, because that is where the horizon intersects with the road and vehicles should not appear above that line.  I implemented three seperate sliding window searches with the following parameters.  I decided on the Y axis ranges and scales based on relative sizes of vehicles that will appear in those ranges (smaller vehicles higher up in the image, larger closer to the bottom).
 
-| Y Start | Y Stop | Scale | Cells per Step
-|:-------------:|:-------------:|:-------------:|
+| Y Start | Y Stop | Scale | Cells per Step |
+|:-------------:|:-------------:|:-------------:|:-------------:|
 | 400	| 500    | 0.8		| 2 |
 | 400	| 500    | 1.0		| 2 |
 | 400	| 525    | 1.2		| 2 |
